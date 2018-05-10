@@ -58,11 +58,33 @@ For more information, please refer to <http://unlicense.org>
         }
         function moveTime() {
             var time = new Date();
-            var hourdeg = time.getHours() / 12 * 360 - 90;
-            var minutedeg = time.getMinutes() / 60 * 360 - 90;
-            hourhand.setAttribute("transform", "rotate(" + hourdeg + ")");
-            minutehand.setAttribute("transform", "rotate(" + minutedeg + ")");
-            window.setTimeout(moveTime, 777);
+            var h = time.getHours();
+            var m = time.getMinutes();
+            var s = time.getSeconds();
+            var ms = time.getMilliseconds();
+            var h_deg = getHourhandRotation(h, m, s) - 90;
+            var m_deg = getMinutehandRotation(m, s, ms) - 90;
+            hourhand.setAttribute("transform", "rotate(" + h_deg + ")");
+            minutehand.setAttribute("transform", "rotate(" + m_deg + ")");
+            window.setTimeout(moveTime, 77);
+        }
+        function getHourhandRotation(h, m, s) {
+            var TWELVE_HOURS_IN_DEG = 360;
+            var ONE_HOUR_IN_DEG = TWELVE_HOURS_IN_DEG / 12;
+            var ONE_MINUTE_IN_DEG = ONE_HOUR_IN_DEG / 60;
+            var h_deg = (h / 12) * TWELVE_HOURS_IN_DEG;
+            var m_deg = (m / 60) * ONE_HOUR_IN_DEG;
+            var s_deg = (s / 60) * ONE_MINUTE_IN_DEG;
+            return h_deg + m_deg + s_deg;
+        }
+        function getMinutehandRotation(m, s, ms) {
+            var ONE_HOUR_IN_DEG = 360;
+            var ONE_MINUTE_IN_DEG = ONE_HOUR_IN_DEG / 60;
+            var ONE_SECOND_IN_DEG = ONE_MINUTE_IN_DEG / 60;
+            var m_deg = (m / 60) * ONE_HOUR_IN_DEG;
+            var s_deg = (s / 60) * ONE_MINUTE_IN_DEG;
+            var ms_deg = (ms / 1000) * ONE_SECOND_IN_DEG;
+            return m_deg + s_deg + ms_deg;
         }
     </script>
 </head>
